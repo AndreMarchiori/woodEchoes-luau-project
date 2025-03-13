@@ -1,5 +1,5 @@
 {
-    "name": "WoodEchoes V.A1",
+    "name": "WoodEchoes v.A1",
     "tree": {
       "$className": "DataModel",
       "ServerScriptService": {
