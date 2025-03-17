@@ -13,11 +13,8 @@ local PLAYER_DEFAULT_DATA = {
 -- Members
 local playersCached = {} --- Dictionary with all players
 local ds = DSService:GetDataStore("WoodEchos DSv.A1")
-
-function PlayerModule.Isloaded(player:Player) : boolean
-    local Isloaded = playersCached[player.UserId] and true or false
-    return Isloaded
-end
+local PlayerLoaded:BindableEvent = game:GetService("ServerStorage").BindableEvents.PlayerLoaded
+local PlayerUnloaded:BindableEvent = game:GetService("ServerStorage").BindableEvents.PlayerUnloaded
 
 --- Sets the hunger of the given player
 function PlayerModule.SetHunger(player:Player, hunger:number)
@@ -29,8 +26,6 @@ function PlayerModule.GetHunger(player: Player)
     return playersCached[player.UserId].hunger    
 end
 
-
-
 local function onPlayerAdded(player: Player)
     player.CharacterAdded:Connect(function(_)
         local data = ds:GetAsync(player.UserId)
@@ -39,10 +34,13 @@ local function onPlayerAdded(player: Player)
         end
 
         playersCached[player.UserId] = data
+        -- Player is fully Loaded
+        PlayerLoaded:Fire(player)
     end)
 end
 
 local function onPlayerRemoving(player: Player)
+    PlayerUnloaded:Fire(player)
     ds:SetAsync(player.UserId, playersCached[player.UserId])
     playersCached[player.UserId] = nil
 end
