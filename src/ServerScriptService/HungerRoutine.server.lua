@@ -1,10 +1,13 @@
 local PlayerModule = require(game:GetService("ServerStorage").Modules.PlayerModule)
-local PlayerLoaded: BindableEvent = game:GetService("ServerStorage").BindableEvents.PlayerLoaded
-local PlayerUnloaded: BindableEvent = game:GetService("ServerStorage").BindableEvents.PlayerUnloaded
 
 -- CONSTANTS
 local CORE_LOOP_INTERVAL = 2
 local HUNGER_DECREMENT = 1
+
+-- Members
+local PlayerLoaded: BindableEvent = game:GetService("ServerStorage").BindableEvents.PlayerLoaded
+local PlayerUnloaded: BindableEvent = game:GetService("ServerStorage").BindableEvents.PlayerUnloaded
+local PlayerHungerUpdated: RemoteEvent = game:GetService("ReplicatedStorage").Network.PlayerHungerUpdated
 
 local function coreLoop(player: Player)
     -- Whether or not the routine should run
@@ -13,7 +16,6 @@ local function coreLoop(player: Player)
     -- Listen to the PlayerUnloaded event to stop this thread
     PlayerUnloaded.Event:Connect(function(playerUnloaded: Player)
         if playerUnloaded == player then
-            print("Parou somente para o jogador ", player)
             isRunning = false
         end
     end)
@@ -24,6 +26,9 @@ local function coreLoop(player: Player)
 
 		local currentHunger = PlayerModule.GetHunger(player)
 		PlayerModule.SetHunger(player, currentHunger - HUNGER_DECREMENT)
+
+        -- Notify Client
+        PlayerHungerUpdated:FireClient(player, PlayerModule.GetHunger(player))
 
 		wait(CORE_LOOP_INTERVAL)
 	end
