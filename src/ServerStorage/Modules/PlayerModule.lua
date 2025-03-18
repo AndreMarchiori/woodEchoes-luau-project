@@ -16,14 +16,28 @@ local ds = DSService:GetDataStore("WoodEchos DSv.A1")
 local PlayerLoaded:BindableEvent = game:GetService("ServerStorage").BindableEvents.PlayerLoaded
 local PlayerUnloaded:BindableEvent = game:GetService("ServerStorage").BindableEvents.PlayerUnloaded
 
+-- Normalizes the hunger value
+function normalizeHunger(hunger:number):number
+    if hunger < 0 then
+        hunger = 0
+    end    
+    if hunger > 100 then
+        hunger = 100
+    end
+
+    return hunger
+end
+
 --- Sets the hunger of the given player
 function PlayerModule.SetHunger(player:Player, hunger:number)
+    hunger = normalizeHunger(hunger)
     playersCached[player.UserId].hunger = hunger
 end
 
 --- Gets the hunger of the given player
 function PlayerModule.GetHunger(player: Player)
-    return playersCached[player.UserId].hunger    
+    local hunger = normalizeHunger(playersCached[player.UserId].hunger)
+    return hunger
 end
 
 local function onPlayerAdded(player: Player)
