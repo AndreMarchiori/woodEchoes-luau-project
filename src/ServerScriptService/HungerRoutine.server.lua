@@ -1,29 +1,43 @@
-local Players = game:GetService("Players")
 local PlayerModule = require(game:GetService("ServerStorage").Modules.PlayerModule)
 
 -- CONSTANTS
 local CORE_LOOP_INTERVAL = 2
 local HUNGER_DECREMENT = 1
 
-local function coreLoop(player:Player)
-    while true do
-        if PlayerModule.Isloaded(player) then
-            local currentHunger = PlayerModule.GetHunger(player)
-            PlayerModule.SetHunger(player, currentHunger - HUNGER_DECREMENT)
+-- Members
+local PlayerLoaded: BindableEvent = game:GetService("ServerStorage").BindableEvents.PlayerLoaded
+local PlayerUnloaded: BindableEvent = game:GetService("ServerStorage").BindableEvents.PlayerUnloaded
+local PlayerHungerUpdated: RemoteEvent = game:GetService("ReplicatedStorage").Network.PlayerHungerUpdated
+
+local function coreLoop(player: Player)
+    -- Whether or not the routine should run
+    local isRunning = true
+
+    -- Listen to the PlayerUnloaded event to stop this thread
+    PlayerUnloaded.Event:Connect(function(playerUnloaded: Player)
+        if playerUnloaded == player then
+            isRunning = false
         end
-        wait(CORE_LOOP_INTERVAL)
-    end
-end
-
-local function onPlayerAdded(player:Player)
-    spawn(function()
-        coreLoop(player)
     end)
+    
+    -- Main Loop
+	while true do
+        if not isRunning then break end
+
+		local currentHunger = PlayerModule.GetHunger(player)
+		PlayerModule.SetHunger(player, currentHunger - HUNGER_DECREMENT)
+
+        -- Notify Client
+        PlayerHungerUpdated:FireClient(player, PlayerModule.GetHunger(player))
+
+		wait(CORE_LOOP_INTERVAL)
+	end
 end
 
-local function onPlayerRemoving(player:Player)
-    print(PlayerModule.GetHunger(player))
+local function onPlayerLoaded(player: Player)
+	spawn(function()
+		coreLoop(player)
+	end)
 end
 
-Players.PlayerAdded:Connect(onPlayerAdded)
-Players.PlayerRemoving:Connect(onPlayerRemoving)
+PlayerLoaded.Event:Connect(onPlayerLoaded)
