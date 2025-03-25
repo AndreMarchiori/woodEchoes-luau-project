@@ -3,6 +3,7 @@ local ProximityPromptService = game:GetService("ProximityPromptService")
 
 -- Constant
 local PROXIMITY_ACTION = "Eat"
+local EATING_SOUND_ID = "rbxassetid://3043029786"
 
 -- Members
 local PlayerModule = require(game.ServerStorage.Modules.PlayerModule)
@@ -10,7 +11,7 @@ local PlayerHungerUpdated: RemoteEvent = game:GetService("ReplicatedStorage").Ne
 
 local function playEatingSound()
     local eatingSound = Instance.new("Sound", game:GetService("Workspace"))
-    eatingSound.SoundId = "rbxassetid://3043029786"
+    eatingSound.SoundId = EATING_SOUND_ID
     local random = Random.new()
     local value = random:NextNumber(0.5, 1)
 
