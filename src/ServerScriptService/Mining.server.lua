@@ -13,6 +13,8 @@ local animation = Instance.new("Animation")
 animation.AnimationId = "rbxassetid://111600220704261"
 local isPressing = false
 
+ContentProvider:PreloadAsync({animation})
+
 local function playPickaxeSound(promptObject:ProximityPrompt)
     local pickaxeSound = Instance.new("Sound", game:GetService("Workspace"))
     pickaxeSound.SoundId = PICKAXE_SOUNDS[math.random( 1, 4)]
