@@ -38,7 +38,7 @@ InventoryButton.MouseButton1Click:Connect(function()
 end)
 
 PlayerInventoryUpdated.OnClientEvent:Connect(function(inventory:table)
-    stoneNumber.Text = inventory.Stone
-    copperNumber.Text = inventory.Copper
-    woodNumber.Text = inventory.Wood
+    stoneNumber.Text = inventory.Stone and inventory.Stone or 0
+    copperNumber.Text = inventory.Copper and inventory.Copper or 0
+    woodNumber.Text = inventory.Wood and inventory.Wood or 0
 end)

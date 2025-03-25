@@ -6,7 +6,11 @@ local DSService = game:GetService("DataStoreService") --- DataStore Service
 -- CONSTANTS
 local PLAYER_DEFAULT_DATA = {
 	hunger = 100,
-	inventory = {},
+	inventory = {
+        Stone = 0,
+        Copper = 0,
+        Wood = 0
+    },
 	level = 1,
 }
 

@@ -15,10 +15,12 @@ local isPressing = false
 
 ContentProvider:PreloadAsync({animation})
 
-local function playPickaxeSound(promptObject:ProximityPrompt)
+local function playPickaxeSound(promptObject:ProximityPrompt, isWood:boolean)
     local pickaxeSound = Instance.new("Sound", game:GetService("Workspace"))
     pickaxeSound.SoundId = PICKAXE_SOUNDS[math.random( 1, 4)]
-
+    if isWood then
+        pickaxeSound.Pitch = 0.1
+    end
     pickaxeSound.Parent = promptObject.Parent
     pickaxeSound:Play()
 end
@@ -30,6 +32,8 @@ local function onPromptTriggered(promptObject:ProximityPrompt, player:Player)
     local miningValue = miningModel:FindFirstChildWhichIsA("NumberValue")
     PlayerModule.AddToInventory(player, miningValue.Name, miningValue.Value)
     PlayerInventoryUpdated:FireClient(player, PlayerModule.GetInventory(player))
+
+    miningModel:Destroy()
 end
 
 local function onPromptHoldBegan(promptObject:ProximityPrompt, player:Player)
@@ -46,10 +50,15 @@ local function onPromptHoldBegan(promptObject:ProximityPrompt, player:Player)
 
     while isPressing do
         animationTrack:Play(nil, nil, 2.5)
-        task.delay(.2, function()
-            --playPickaxeSound(promptObject)
-        end)
-
+        if promptObject.Parent.Name == "Stone" or promptObject.Parent.Name == "Copper" then
+            task.delay(.2, function()
+                playPickaxeSound(promptObject, false)
+            end)
+        else
+            task.delay(.2, function()
+                playPickaxeSound(promptObject, true)
+            end)
+        end
         wait(.5)
     end
 end
