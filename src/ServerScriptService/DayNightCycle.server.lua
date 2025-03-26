@@ -16,8 +16,8 @@ while true do
         actualTime -= 1440
     end
     actualTime += 0.8
-    InGameTimeUpdated:FireAllClients(minutesAfterMidnight)
+    InGameTimeUpdated:FireAllClients(actualTime)
 
-    print("Actual Time: "..minutesAfterMidnight)
+    print("Actual Time: "..actualTime)
     task.wait(WAIT_INTERVAL)
 end

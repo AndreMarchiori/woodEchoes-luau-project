@@ -28,11 +28,13 @@ end
 local function onPromptTriggered(promptObject:ProximityPrompt, player:Player)
     if promptObject.Name ~= PROXIMITY_ACTION then return end
     
-    local miningModel = promptObject.Parent
+    local miningModel:Model = promptObject.Parent
     local miningValue = miningModel:FindFirstChildWhichIsA("NumberValue")
     PlayerModule.AddToInventory(player, miningValue.Name, miningValue.Value)
     PlayerInventoryUpdated:FireClient(player, PlayerModule.GetInventory(player))
-
+    local LastModelPosition = CFrame.new(miningModel:GetPivot().X, miningModel:GetPivot().Y, miningModel:GetPivot().Z)
+    
+    
     miningModel:Destroy()
 end
 
