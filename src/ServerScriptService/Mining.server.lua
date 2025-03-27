@@ -19,7 +19,7 @@ local function playPickaxeSound(promptObject:ProximityPrompt, isWood:boolean)
     local pickaxeSound = Instance.new("Sound", game:GetService("Workspace"))
     pickaxeSound.SoundId = PICKAXE_SOUNDS[math.random( 1, 4)]
     if isWood then
-        pickaxeSound.Pitch = 0.1
+        pickaxeSound.Pitch = 0.5
     end
     pickaxeSound.Parent = promptObject.Parent
     pickaxeSound:Play()

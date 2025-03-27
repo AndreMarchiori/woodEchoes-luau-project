@@ -83,7 +83,7 @@ end)
 while true do
     if #watermelons:GetChildren() < MAX_WATERMELONS then
         spawnMelon()
-        task.wait(SPAWN_DELAY*5)
+        task.wait(SPAWN_DELAY*4)
     else
         task.wait(60)
     end

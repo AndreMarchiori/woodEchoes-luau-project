@@ -1,7 +1,7 @@
 local PlayerModule = require(game:GetService("ServerStorage").Modules.PlayerModule)
 
 -- CONSTANTS
-local CORE_LOOP_INTERVAL = 2
+local CORE_LOOP_INTERVAL = 4
 local HUNGER_DECREMENT = 1
 
 -- Members
