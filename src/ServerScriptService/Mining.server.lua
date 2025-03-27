@@ -40,7 +40,7 @@ local function onPromptTriggered(promptObject:ProximityPrompt, player:Player)
     
     miningModel:Destroy()
 
-    local respawnTime = math.random(30, 120)
+    local respawnTime = math.random(30, 160)
     task.delay(respawnTime, function()
         modelClone.Parent = originalParent
         modelClone:SetPrimaryPartCFrame(originalPosition)
