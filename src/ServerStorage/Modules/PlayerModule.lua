@@ -16,7 +16,7 @@ local PLAYER_DEFAULT_DATA = {
 
 -- Members
 local playersCached = {} --- Dictionary with all players
-local ds = DSService:GetDataStore("WoodEchos DSv.A2")
+local ds = DSService:GetDataStore("WoodEchos DSv.Release")
 local PlayerLoaded: BindableEvent = game:GetService("ServerStorage").BindableEvents.PlayerLoaded
 local PlayerUnloaded: BindableEvent = game:GetService("ServerStorage").BindableEvents.PlayerUnloaded
 local PlayerInventoryUpdated: RemoteEvent = game:GetService("ReplicatedStorage").Network.PlayerInventoryUpdated
