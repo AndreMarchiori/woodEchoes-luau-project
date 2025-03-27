@@ -32,6 +32,7 @@ local function coreLoop(player: Player)
 		-- Notify Client
 		PlayerHungerUpdated:FireClient(player, PlayerModule.GetHunger(player))
 		local humanoid = player.Character:WaitForChild("Humanoid")
+		
 		if PlayerModule.GetHunger(player) <= 10 then
 			humanoid.Health -= 5
 			humanoid.WalkSpeed = 12
@@ -41,7 +42,6 @@ local function coreLoop(player: Player)
 		else
 			humanoid.WalkSpeed = 18
 		end
-
 		wait(CORE_LOOP_INTERVAL)
 	end
 end

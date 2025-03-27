@@ -11,7 +11,7 @@ local melonBushes:Folder = game:GetService("Workspace").MelonBushes
 local foods:Folder = game:GetService("Workspace").Foods
 local apples:Folder = foods.Apples
 local watermelons:Folder = foods.Watermelons
-local ServerStorage = game:GetService("ServerStorage")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local function spawnApple()
     local allTrees = appleTrees:GetChildren()
@@ -20,7 +20,7 @@ local function spawnApple()
 
     if randomTreeAppleSpawner then
         local positionSelected = randomTreeAppleSpawner.CFrame
-        local newApple = ServerStorage.Foods.Apple:Clone()
+        local newApple = ReplicatedStorage.Foods.Apple:Clone()
 
         -- Define a PrimaryPart se não estiver definida
         if not newApple.PrimaryPart then
@@ -53,7 +53,7 @@ local function spawnMelon()
     local randomValue2 = math.random(-5, 5)
     local positionSelected = randomBush.PrimaryPart.CFrame
 
-    local newWatermelon = ServerStorage.Foods.Watermelon:Clone()
+    local newWatermelon = ReplicatedStorage.Foods.Watermelon:Clone()
 
     -- Verifica se a melancia tem uma PrimaryPart
     if not newWatermelon.PrimaryPart then

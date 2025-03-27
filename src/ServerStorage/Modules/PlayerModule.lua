@@ -16,11 +16,12 @@ local PLAYER_DEFAULT_DATA = {
 
 -- Members
 local playersCached = {} --- Dictionary with all players
-local ds = DSService:GetDataStore("WoodEchos DSv.A1")
+local ds = DSService:GetDataStore("WoodEchos DSv.A2")
 local PlayerLoaded: BindableEvent = game:GetService("ServerStorage").BindableEvents.PlayerLoaded
 local PlayerUnloaded: BindableEvent = game:GetService("ServerStorage").BindableEvents.PlayerUnloaded
 local PlayerInventoryUpdated: RemoteEvent = game:GetService("ReplicatedStorage").Network.PlayerInventoryUpdated
 local PlayerHungerUpdated: RemoteEvent = game:GetService("ReplicatedStorage").Network.PlayerHungerUpdated
+local PlayerLevelUp:RemoteEvent = game:GetService("ReplicatedStorage").Network.PlayerLevelUp
 
 -- Normalizes the hunger value
 function normalizeHunger(hunger: number): number
@@ -53,6 +54,15 @@ function PlayerModule.AddToInventory(player: Player, key: string, value: number)
 	inventory[key] = value
 end
 
+function PlayerModule.GetLevel(player:Player)
+	return playersCached[player.UserId].level
+end
+
+function PlayerModule.SetLevel(player:Player, level:number)
+	playersCached[player.UserId].level = level
+end
+
+
 --- Sets the hunger of the given player
 function PlayerModule.SetHunger(player: Player, hunger: number)
 	hunger = normalizeHunger(hunger)
@@ -66,6 +76,7 @@ function PlayerModule.GetHunger(player: Player)
 end
 
 local function onPlayerAdded(player: Player)
+	print(player.UserId)
 	player.CharacterAdded:Connect(function(_)
 		local data = ds:GetAsync(player.UserId)
 		if not data then
@@ -78,11 +89,13 @@ local function onPlayerAdded(player: Player)
 
 		PlayerHungerUpdated:FireClient(player, PlayerModule.GetHunger(player))
 		PlayerInventoryUpdated:FireClient(player, PlayerModule.GetInventory(player))
+		PlayerLevelUp:FireClient(player, PlayerModule.GetLevel(player))
 	end)
 end
 
 local function onPlayerRemoving(player: Player)
 	PlayerUnloaded:Fire(player)
+	print(playersCached[player.UserId])
 	ds:SetAsync(player.UserId, playersCached[player.UserId])
 	playersCached[player.UserId] = nil
 end
