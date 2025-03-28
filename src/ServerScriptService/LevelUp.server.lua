@@ -46,7 +46,7 @@ local function onPromptTriggered(promptObject:ProximityPrompt, player:Player)
         return
     end
 
-    if inventory.Wood >= require.Wood then
+    if inventory.Wood <= require.Wood then
         print("Not Enough Wood")
         return
     end
